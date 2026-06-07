@@ -14,6 +14,9 @@ export default function FlipWord({ word, flipTo, as = 'span', style, flipped: co
   const flipped = isControlled ? controlledFlipped : internalFlipped
   const Tag = as
 
+  const maxLen = Math.max(word.length, flipTo.length)
+  const chars = word.padEnd(maxLen, '\u00A0').split('')
+
   return (
     <Tag
       onMouseEnter={isControlled ? undefined : () => setInternalFlipped(true)}
@@ -25,40 +28,61 @@ export default function FlipWord({ word, flipTo, as = 'span', style, flipped: co
         ...style,
       }}
     >
+      {chars.map((char, i) => (
+        <CharFlip
+          key={i}
+          char={char}
+          flipToChar={flipTo[i] || '\u00A0'}
+          flipped={flipped}
+          delayIn={i * 200}
+          delayOut={(maxLen - 1 - i) * 200}
+        />
+      ))}
+    </Tag>
+  )
+}
+
+function CharFlip({
+  char,
+  flipToChar,
+  flipped,
+  delayIn,
+  delayOut,
+}: {
+  char: string
+  flipToChar: string
+  flipped: boolean
+  delayIn: number
+  delayOut: number
+}) {
+  return (
+    <span
+      style={{
+        display: 'inline-grid',
+        gridTemplate: '1fr / 1fr',
+        position: 'relative',
+        transition: `transform 0.4s cubic-bezier(0.65, 0, 0.35, 1) ${flipped ? delayIn : delayOut}ms`,
+        transform: flipped ? 'rotateX(180deg)' : 'rotateX(0deg)',
+        transformStyle: 'preserve-3d',
+      }}
+    >
       <span
         style={{
-          display: 'inline-block',
-          position: 'relative',
-          transition: 'transform 0.5s cubic-bezier(0.65, 0, 0.35, 1)',
-          transform: flipped ? 'rotateX(180deg)' : 'rotateX(0deg)',
-          transformStyle: 'preserve-3d',
+          gridArea: '1/1',
+          backfaceVisibility: 'hidden',
         }}
       >
-        <span
-          style={{
-            display: 'inline-block',
-            backfaceVisibility: 'hidden',
-          }}
-        >
-          {word}
-        </span>
-        <span
-          style={{
-            backfaceVisibility: 'hidden',
-            transform: 'rotateX(180deg)',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {flipTo}
-        </span>
+        {char}
       </span>
-    </Tag>
+      <span
+        style={{
+          gridArea: '1/1',
+          backfaceVisibility: 'hidden',
+          transform: 'rotateX(180deg)',
+        }}
+      >
+        {flipToChar}
+      </span>
+    </span>
   )
 }

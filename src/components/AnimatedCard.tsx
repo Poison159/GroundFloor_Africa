@@ -1,4 +1,5 @@
 import { useScrollReveal } from '../hooks/useScrollReveal'
+import PhoneCollage from './PhoneCollage'
 
 interface AnimatedCardProps {
   title: string
@@ -7,9 +8,10 @@ interface AnimatedCardProps {
   image: string
   color: string
   index: number
+  phoneCollage?: boolean
 }
 
-export default function AnimatedCard({ title, description, tags, image, color, index }: AnimatedCardProps) {
+export default function AnimatedCard({ title, description, tags, image, color, index, phoneCollage }: AnimatedCardProps) {
   const { ref, visible } = useScrollReveal(0.1)
 
   return (
@@ -84,30 +86,45 @@ export default function AnimatedCard({ title, description, tags, image, color, i
         </div>
       </div>
 
-      <div
-        style={{
-          flex: 1,
-          minWidth: 0,
-          aspectRatio: '4/3',
-          borderRadius: 16,
-          overflow: 'hidden',
-          position: 'relative',
-          background: '#111',
-        }}
-      >
-        <img
-          src={image}
-          alt={title}
+      {phoneCollage ? (
+        <div
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            display: 'block',
-            transform: visible ? 'scale(1)' : 'scale(1.15)',
-            transition: 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)',
+            flex: 1,
+            minWidth: 0,
+            aspectRatio: '4/3',
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateX(0)' : 'translateX(30px)',
+            transition: 'all 0.8s cubic-bezier(0.65, 0, 0.35, 1)',
           }}
-        />
-      </div>
+        >
+          <PhoneCollage />
+        </div>
+      ) : (
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            aspectRatio: '4/3',
+            borderRadius: 16,
+            overflow: 'hidden',
+            position: 'relative',
+            background: '#111',
+          }}
+        >
+          <img
+            src={image}
+            alt={title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+              transform: visible ? 'scale(1)' : 'scale(1.15)',
+              transition: 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)',
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }

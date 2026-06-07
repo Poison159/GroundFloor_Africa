@@ -100,6 +100,7 @@ export default function Projects() {
               image={project.image}
               color={project.color}
               index={i}
+              phoneCollage={project.id === 'project-1'}
             />
           ))}
         </div>
