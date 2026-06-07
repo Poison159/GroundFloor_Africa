@@ -1,5 +1,6 @@
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import PhoneCollage from './PhoneCollage'
+import RedactedReveal from './RedactedReveal'
 
 interface AnimatedCardProps {
   title: string
@@ -45,17 +46,17 @@ export default function AnimatedCard({ title, description, tags, image, color, i
             marginBottom: '1rem',
           }}
         />
-        <h3
+        <RedactedReveal
+          lines={[title]}
+          as="h3"
+          stagger={120}
           style={{
             color: '#fff',
             fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
             fontWeight: 600,
-            margin: 0,
             lineHeight: 1.2,
           }}
-        >
-          {title}
-        </h3>
+        />
         <p
           style={{
             color: 'rgba(255,255,255,0.5)',

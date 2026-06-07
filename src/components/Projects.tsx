@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import data from '../data/portfolio.json'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import AnimatedCard from './AnimatedCard'
+import RedactedReveal from './RedactedReveal'
 
 export default function Projects() {
   const { ref, visible } = useScrollReveal(0.05)
@@ -76,18 +77,35 @@ export default function Projects() {
             marginBottom: '1rem',
           }}
         />
-        <h2
+        <RedactedReveal
+          lines={['Featured', 'Projects']}
+          as="h2"
+          stagger={250}
           style={{
             fontSize: 'clamp(2rem, 4vw, 3.5rem)',
             fontWeight: 700,
             color: '#fff',
-            margin: 0,
-            lineHeight: 1.1,
+            lineHeight: 1.2,
           }}
-        >
-          Featured{' '}
-          <span style={{ color: '#d2ff00' }}>Projects</span>
-        </h2>
+          highlightIndex={1}
+          highlightColor="#d2ff00"
+        />
+        <RedactedReveal
+          lines={[
+            'Modern apps, websites, and data analytics',
+            'built for Africa.',
+          ]}
+          as="p"
+          stagger={200}
+          style={{
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: 'clamp(0.9rem, 1.5vw, 1.05rem)',
+            lineHeight: 1.6,
+            marginTop: '0.75rem',
+            maxWidth: 520,
+          }}
+          barColor="rgba(210,255,0,0.3)"
+        />
 
         {/* Animated Cards - scroll reveal */}
         <div style={{ marginTop: '3rem' }}>
