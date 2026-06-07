@@ -1,0 +1,152 @@
+{
+  "portfolio": [
+    {
+      "id": "project-1",
+      "title": "SpotVibe / Envibe",
+      "category": "Mobile",
+      "description": "A React Native app that uses location to find nearby events, activities and venues based on your vibe. Live on iOS App Store and Google Play.",
+      "tech": ["React Native", "Expo", ".NET Core", "MongoDB"],
+      "image": "/images/SpotVibe-Merketing/screenshot_1.png",
+      "imageHover": "/images/SpotVibe-Merketing/screenshot_2.png",
+      "color": "#667eea",
+      "appStore": "https://apps.apple.com/za/app/spotvibe/id6747991573",
+      "playStore": "https://play.google.com/store/apps/details?id=com.groundfloor.envibe"
+    },
+    {
+      "id": "project-2",
+      "title": "Admin Dashboard",
+      "category": "Web",
+      "description": "A real-time admin panel for managing events, users, and analytics across platforms. Built for SpotVibe with full CRUD and role-based access.",
+      "tech": ["React", "XState", "TanStack Query", "GCP"],
+      "image": "/images/web_admin_1.png",
+      "imageHover": "/images/web_admin_4.png",
+      "color": "#764ba2"
+    },
+    {
+      "id": "project-3",
+      "title": "Credo Mutwa Village",
+      "category": "Web",
+      "description": "A cultural village website showcasing the heritage, art, and legacy of Credo Mutwa in Soweto. Features virtual tours and event listings.",
+      "tech": ["React", "Firebase", "CSS"],
+      "image": "/images/credoMutwa/screenshot_1.png",
+      "imageHover": "/images/credoMutwa/screenshot_4.png",
+      "color": "#00b894"
+    },
+    {
+      "id": "project-4",
+      "title": "Joburg Theatre",
+      "category": "Web",
+      "description": "A vibrant theatre venue website featuring upcoming shows, events, and ticket booking for the iconic Johannesburg theatre.",
+      "tech": ["React", "Firebase", "Material UI"],
+      "image": "/images/soweto_theatre/screenshot_2.png",
+      "imageHover": "/images/soweto_theatre/screenshot_3.png",
+      "color": "#e17055"
+    },
+    {
+      "id": "project-5",
+      "title": "Soweto Equestrian",
+      "category": "Web",
+      "description": "An equestrian centre website offering horse riding services, lessons, and events in Soweto. Built with a clean, modern design.",
+      "tech": ["React", "Firebase", "Stripe"],
+      "image": "/images/aquestrian/screenshot_1.png",
+      "imageHover": "/images/aquestrian/screenshot_3.png",
+      "color": "#0984e3"
+    }
+  ],
+  "services": [
+    {
+      "title": "Mobile Apps",
+      "desc": "Cross-platform React Native & Expo apps with real-time features, push notifications, and app store deployment.",
+      "color": "#667eea",
+      "stats": "Android & iOS",
+      "image": "/images/SpotVibe-Merketing/screenshot_1.png"
+    },
+    {
+      "title": "Web Platforms",
+      "desc": "High-performance SPAs, admin dashboards, and marketing sites with modern React and TypeScript.",
+      "color": "#d2ff00",
+      "stats": "Responsive & Fast",
+      "image": "/images/web_admin_1.png"
+    },
+    {
+      "title": "Data Analytics",
+      "desc": "Custom dashboards, reporting, and data visualisation tailored to your business needs for data-driven decisions.",
+      "color": "#e17055",
+      "stats": "Insights & Reports",
+      "image": "/images/ana_1.png"
+    },
+    {
+      "title": "Backend Systems",
+      "desc": "REST & real-time APIs with .NET Core, Node.js, and cloud infrastructure on GCP and Firebase.",
+      "color": "#0984e3",
+      "stats": "Scalable APIs",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=800&fit=crop"
+    },
+    {
+      "title": "UI/UX Design",
+      "desc": "Clean, accessible interfaces with thoughtful animations, responsive layouts, and user-centred design.",
+      "color": "#00b894",
+      "stats": "Pixel Perfect",
+      "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=800&fit=crop"
+    }
+  ],
+  "team": [
+    {
+      "name": "Siyabonga Hadebe",
+      "role": "Founder & Senior Software Engineer",
+      "image": "/images/siya.png",
+      "linkedin": "https://www.linkedin.com/in/siyabonga-hadebe-a981b016/",
+      "description": "7+ years building full-stack apps. Previously Senior Frontend Developer at Platform45, Senior Software Engineer at Singular Systems. Built and launched SpotVibe on the iOS App Store."
+    },
+    {
+      "name": "Sibongiseni Buthelezi",
+      "role": "Founder & Senior Software Engineer",
+      "image": "/images/sibo.png",
+      "linkedin": "https://www.linkedin.com/in/sibongiseni-buthelezi-09599935/",
+      "description": "Senior C# Developer building Practice Manager Pro for the legal industry. 6 years as Senior Software Developer at JSE. BRICS Future Skills Challenge expert in data science."
+    },
+    {
+      "name": "Quentin Manamela",
+      "role": "Senior Software Engineer",
+      "image": "/images/quintin.png",
+      "linkedin": "https://www.linkedin.com/in/quentinmanamela/",
+      "description": "Senior Software Engineer at Signant Health working on clinical trial technologies. Previously Senior Frontend Developer at Platform45. WeThinkCode graduate."
+    }
+  ],
+  "pricing": [
+    {
+      "title": "Mobile Apps",
+      "startPrice": "R5 000",
+      "description": "Android & iOS — cross-platform. Working prototype with core features delivered within a month. Built with Expo and native modules.",
+      "features": [
+        { "title": "Notifications", "price": "R1 000", "desc": "Push notifications, in-app alerts, and email reminders to keep your users engaged." },
+        { "title": "Admin app", "price": "R2 000", "desc": "A companion admin panel for managing users, content, and analytics." },
+        { "title": "New features", "price": "R1 000", "desc": "Extend your app with additional functionality and custom features." }
+      ]
+    },
+    {
+      "title": "Websites",
+      "startPrice": "R800",
+      "description": "Responsive, modern websites delivered within a week. Single-page or multi-page, fully functional and ready to deploy.",
+      "features": [
+        { "title": "Static web", "price": "R800", "desc": "Purely static images and assets. Ideal for brochure sites and landing pages." },
+        { "title": "Dynamic web", "price": "R4 000", "desc": "Full website with backend, database, and dynamic content." },
+        { "title": "New features", "price": "R1 000", "desc": "Extend your site with additional pages and components." }
+      ]
+    },
+    {
+      "title": "Analytics",
+      "startPrice": "R1 000",
+      "description": "Add analytics to your existing solution. Dashboards, reporting, and data visualisation tailored to your business.",
+      "features": [
+        { "title": "Custom dashboards", "price": "R1 500", "desc": "Tailored analytics dashboards with real-time metrics and custom KPIs." },
+        { "title": "Data integration", "price": "R2 000", "desc": "Connect your existing systems into a unified analytics pipeline." }
+      ]
+    }
+  ],
+  "socials": [
+    { "name": "GitHub", "url": "https://github.com/groundfloor" },
+    { "name": "LinkedIn", "url": "https://www.linkedin.com/company/groundfloor" },
+    { "name": "Email", "url": "mailto:info@groundfloor.africa" }
+  ]
+}
