@@ -137,6 +137,9 @@ export default function Projects() {
               imageHover={project.imageHover}
               images={project.images}
               video={project.video}
+              appStore={project.appStore}
+              playStore={project.playStore}
+              url={project.url}
               color={project.color}
               index={i}
               phoneCollage={project.id === 'project-1'}

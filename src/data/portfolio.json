@@ -28,6 +28,7 @@
         "/images/web_admin_4.png",
         "/images/web_admin_5.png"
       ],
+      "url": "https://spotvibe-admin.groundfloor.africa/events",
       "color": "#764ba2"
     },
     {
@@ -45,6 +46,7 @@
         "/images/credoMutwa/screenshot_4.png",
         "/images/credoMutwa/screenshot_5.png"
       ],
+      "url": "https://credomutwa.web.app/",
       "color": "#00b894"
     },
     {
@@ -62,6 +64,7 @@
         "/images/soweto_theatre/screenshot_4.png",
         "/images/soweto_theatre/screenshot_5.png"
       ],
+      "url": "https://joburgtheatre-3f2f4.web.app/",
       "color": "#e17055"
     },
     {
@@ -78,6 +81,7 @@
         "/images/aquestrian/screenshot_3.png",
         "/images/aquestrian/screenshot_4.png"
       ],
+      "url": "https://sowetoequestrian-8680d.web.app/services",
       "color": "#0984e3"
     }
   ],

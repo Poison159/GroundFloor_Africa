@@ -13,13 +13,16 @@ interface AnimatedCardProps {
   imageHover?: string
   images?: string[]
   video?: string
+  appStore?: string
+  playStore?: string
+  url?: string
   color: string
   index: number
   phoneCollage?: boolean
   revealed: boolean
 }
 
-export default function AnimatedCard({ title, description, tags, image, imageHover, images, video, color, index, phoneCollage, revealed }: AnimatedCardProps) {
+export default function AnimatedCard({ title, description, tags, image, imageHover, images, video, appStore, playStore, url, color, index, phoneCollage, revealed }: AnimatedCardProps) {
   const [active, setActive] = useState(false)
   const [hovered, setHovered] = useState(false)
 
@@ -30,7 +33,9 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
   }, [revealed, index])
 
   return (
-    <div
+    <>
+      <style>{`@keyframes zoomBurst { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }`}</style>
+      <div
       style={{
         display: 'flex',
         flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
@@ -100,6 +105,50 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
             </span>
           ))}
         </div>
+        {appStore && playStore && (
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.75rem',
+              marginTop: '1.25rem',
+              justifyContent: 'flex-start',
+              animation: active ? 'zoomBurst 0.6s ease-out' : 'none',
+            }}
+          >
+            <a href={appStore} target="_blank" rel="noopener noreferrer" style={{ display: 'block' }}>
+              <img src="/apple-app-store-badge.svg" alt="Download on the App Store" style={{ height: 44, width: 'auto', display: 'block' }} />
+            </a>
+            <a href={playStore} target="_blank" rel="noopener noreferrer" style={{ display: 'block' }}>
+              <img src="/google-play-badge.svg" alt="Get it on Google Play" style={{ height: 44, width: 'auto', display: 'block' }} />
+            </a>
+          </div>
+        )}
+        {url && (
+          <div style={{ marginTop: '1.25rem' }}>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-block',
+                padding: '0.5rem 1.25rem',
+                border: '1.5px solid #d2ff00',
+                borderRadius: 100,
+                color: '#d2ff00',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                letterSpacing: '0.04em',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                background: 'transparent',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#d2ff00'; e.currentTarget.style.color = '#0a0a0a' }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#d2ff00' }}
+            >
+              visit website
+            </a>
+          </div>
+        )}
       </div>
 
       {phoneCollage ? (
@@ -107,18 +156,49 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
           style={{
             flex: 1,
             minWidth: 0,
-            aspectRatio: '4/3',
-            opacity: active ? 1 : 0,
-            transform: active ? 'translateX(0)' : 'translateX(30px)',
-            transition: 'all 2s cubic-bezier(0.65, 0, 0.35, 1)',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          <PhoneCollage video={video} />
+          <div
+            style={{
+              flexShrink: 0,
+              opacity: active ? 1 : 0,
+              transform: active ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 1.2s cubic-bezier(0.65, 0, 0.35, 1)',
+              marginBottom: '3rem',
+              textAlign: 'center',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'Caveat', cursive",
+                fontSize: 'clamp(1.4rem, 3vw, 2.4rem)',
+                color: '#d2ff00',
+                lineHeight: 1.3,
+                textShadow: '0 0 40px rgba(210,255,0,0.15)',
+                userSelect: 'none',
+              }}
+            >
+              Psss...hey you 🫵, come hover here!
+            </span>
+          </div>
+          <div
+            style={{
+              aspectRatio: '4/3',
+              width: '100%',
+              opacity: active ? 1 : 0,
+              transform: active ? 'translateX(0)' : 'translateX(30px)',
+              transition: 'all 2s cubic-bezier(0.65, 0, 0.35, 1)',
+            }}
+          >
+            <PhoneCollage video={video} />
+          </div>
         </div>
       ) : images ? (
         <div
           style={{
-            flex: 1,
+            flex: 1.2,
             minWidth: 0,
             aspectRatio: '4/3',
             borderRadius: 16,
@@ -161,7 +241,7 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
       ) : (
         <div
           style={{
-            flex: 1,
+            flex: 1.2,
             minWidth: 0,
             aspectRatio: '4/3',
             borderRadius: 16,
@@ -249,5 +329,6 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
         </div>
       )}
     </div>
+    </>
   )
 }
