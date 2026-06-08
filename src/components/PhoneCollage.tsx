@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 const images = [
   '/images/phone_images/1.png',
@@ -13,8 +13,24 @@ const displayOrder = [0, 1, 2, 3, 4]
 const baseOffsets = [0, 10, 20, 30, 40]
 const baseRotations = [0, 0, 0, 0, 0]
 
-export default function PhoneCollage() {
+interface PhoneCollageProps {
+  video?: string
+}
+
+export default function PhoneCollage({ video }: PhoneCollageProps) {
   const [hoveredDisplayIdx, setHoveredDisplayIdx] = useState<number | null>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el) return
+    if (hoveredDisplayIdx === 0) {
+      el.play().catch(() => {})
+    } else {
+      el.pause()
+      el.currentTime = 0
+    }
+  }, [hoveredDisplayIdx])
 
   return (
     <div
@@ -73,16 +89,32 @@ export default function PhoneCollage() {
                 : '0 4px 20px rgba(0,0,0,0.35)',
             }}
           >
-            <img
-              src={images[imgIdx]}
-              alt=""
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-              }}
-            />
+            {video && di === 0 ? (
+              <video
+                ref={videoRef}
+                src={video}
+                muted
+                playsInline
+                loop
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+              />
+            ) : (
+              <img
+                src={images[imgIdx]}
+                alt=""
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+              />
+            )}
             <div
               style={{
                 position: 'absolute',

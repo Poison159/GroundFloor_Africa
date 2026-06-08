@@ -136,6 +136,7 @@ export default function Projects() {
               image={project.image}
               imageHover={project.imageHover}
               images={project.images}
+              video={project.video}
               color={project.color}
               index={i}
               phoneCollage={project.id === 'project-1'}

@@ -12,13 +12,14 @@ interface AnimatedCardProps {
   image: string
   imageHover?: string
   images?: string[]
+  video?: string
   color: string
   index: number
   phoneCollage?: boolean
   revealed: boolean
 }
 
-export default function AnimatedCard({ title, description, tags, image, imageHover, images, color, index, phoneCollage, revealed }: AnimatedCardProps) {
+export default function AnimatedCard({ title, description, tags, image, imageHover, images, video, color, index, phoneCollage, revealed }: AnimatedCardProps) {
   const [active, setActive] = useState(false)
   const [hovered, setHovered] = useState(false)
 
@@ -112,7 +113,7 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
             transition: 'all 2s cubic-bezier(0.65, 0, 0.35, 1)',
           }}
         >
-          <PhoneCollage />
+          <PhoneCollage video={video} />
         </div>
       ) : images ? (
         <div
