@@ -1,34 +1,46 @@
-import { useScrollReveal } from '../hooks/useScrollReveal'
-import PhoneCollage from './PhoneCollage'
+import { useState, useEffect } from 'react'
 import RedactedReveal from './RedactedReveal'
+import PhoneCollage from './PhoneCollage'
+import ImageCycler from './ImageCycler'
+
+const ease = '0.6s cubic-bezier(0.65, 0, 0.35, 1)'
 
 interface AnimatedCardProps {
   title: string
   description: string
   tags: string[]
   image: string
+  imageHover?: string
+  images?: string[]
   color: string
   index: number
   phoneCollage?: boolean
+  revealed: boolean
 }
 
-export default function AnimatedCard({ title, description, tags, image, color, index, phoneCollage }: AnimatedCardProps) {
-  const { ref, visible } = useScrollReveal(0.1)
+export default function AnimatedCard({ title, description, tags, image, imageHover, images, color, index, phoneCollage, revealed }: AnimatedCardProps) {
+  const [active, setActive] = useState(false)
+  const [hovered, setHovered] = useState(false)
+
+  useEffect(() => {
+    if (!revealed) return
+    const timer = setTimeout(() => setActive(true), index * 2000)
+    return () => clearTimeout(timer)
+  }, [revealed, index])
 
   return (
     <div
-      ref={ref}
       style={{
         display: 'flex',
         flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
         gap: '3rem',
         alignItems: 'center',
         padding: '3rem 0',
-        opacity: visible ? 1 : 0,
-        transform: visible
+        opacity: active ? 1 : 0,
+        transform: active
           ? 'translateY(0) scale(1)'
-          : `translateY(${index % 2 === 0 ? '60px' : '60px'}) scale(0.95)`,
-        transition: `all 0.8s cubic-bezier(0.65, 0, 0.35, 1) ${index * 0.15}s`,
+          : 'translateY(60px) scale(0.95)',
+        transition: 'all 2s cubic-bezier(0.65, 0, 0.35, 1)',
       }}
     >
       <div
@@ -57,16 +69,18 @@ export default function AnimatedCard({ title, description, tags, image, color, i
             lineHeight: 1.2,
           }}
         />
-        <p
+        <RedactedReveal
+          lines={[description]}
+          as="p"
+          stagger={120}
+          barColor="rgba(210,255,0,0.15)"
           style={{
             color: 'rgba(255,255,255,0.5)',
             fontSize: '1rem',
             lineHeight: 1.7,
             marginTop: '1rem',
           }}
-        >
-          {description}
-        </p>
+        />
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.25rem' }}>
           {tags.map((tag) => (
             <span
@@ -93,12 +107,55 @@ export default function AnimatedCard({ title, description, tags, image, color, i
             flex: 1,
             minWidth: 0,
             aspectRatio: '4/3',
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateX(0)' : 'translateX(30px)',
-            transition: 'all 0.8s cubic-bezier(0.65, 0, 0.35, 1)',
+            opacity: active ? 1 : 0,
+            transform: active ? 'translateX(0)' : 'translateX(30px)',
+            transition: 'all 2s cubic-bezier(0.65, 0, 0.35, 1)',
           }}
         >
           <PhoneCollage />
+        </div>
+      ) : images ? (
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            aspectRatio: '4/3',
+            borderRadius: 16,
+            overflow: 'hidden',
+            position: 'relative',
+            background: '#111',
+          }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          <ImageCycler images={images} alt={title} />
+          <div
+            style={{
+              position: 'absolute',
+              top: '1.25rem',
+              left: '1.25rem',
+              zIndex: 2,
+              opacity: active && !hovered ? 1 : 0,
+              transition: 'opacity 0.4s',
+            }}
+          >
+            <span
+              style={{
+                color: '#d2ff00',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                textShadow: '0 2px 8px rgba(0,0,0,0.6)',
+                background: 'rgba(0,0,0,0.4)',
+                padding: '0.35rem 0.85rem',
+                borderRadius: 100,
+                border: '1px solid rgba(255,255,255,0.15)',
+              }}
+            >
+              hover me
+            </span>
+          </div>
         </div>
       ) : (
         <div
@@ -111,19 +168,83 @@ export default function AnimatedCard({ title, description, tags, image, color, i
             position: 'relative',
             background: '#111',
           }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
         >
-          <img
-            src={image}
-            alt={title}
+          {imageHover ? (
+            <>
+              <img
+                src={image}
+                alt={title}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                  opacity: hovered ? 0 : 1,
+                  transform: hovered ? 'scale(0.95)' : 'scale(1)',
+                  transition: `opacity ${ease}, transform ${ease}`,
+                }}
+              />
+              <img
+                src={imageHover}
+                alt={`${title} hover`}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                  opacity: hovered ? 1 : 0,
+                  transform: hovered ? 'scale(1)' : 'scale(1.1)',
+                  transition: `opacity ${ease}, transform ${ease}`,
+                }}
+              />
+            </>
+          ) : (
+            <img
+              src={image}
+              alt={title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+                transform: active ? 'scale(1)' : 'scale(1.15)',
+                transition: 'transform 2s cubic-bezier(0.65, 0, 0.35, 1)',
+              }}
+            />
+          )}
+          <div
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              display: 'block',
-              transform: visible ? 'scale(1)' : 'scale(1.15)',
-              transition: 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)',
+              position: 'absolute',
+              top: '1.25rem',
+              left: '1.25rem',
+              zIndex: 2,
+              opacity: active && !hovered ? 1 : 0,
+              transition: 'opacity 0.4s',
             }}
-          />
+          >
+            <span
+              style={{
+                color: '#d2ff00',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                textShadow: '0 2px 8px rgba(0,0,0,0.6)',
+                background: 'rgba(0,0,0,0.4)',
+                padding: '0.35rem 0.85rem',
+                borderRadius: 100,
+                border: '1px solid rgba(255,255,255,0.15)',
+              }}
+            >
+              hover me
+            </span>
+          </div>
         </div>
       )}
     </div>

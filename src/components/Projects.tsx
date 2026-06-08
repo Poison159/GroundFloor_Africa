@@ -10,9 +10,27 @@ export default function Projects() {
   const [projectIndex, setProjectIndex] = useState(0)
   const [dismissing, setDismissing] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const [sectionRevealed, setSectionRevealed] = useState(false)
+  const cardsContainerRef = useRef<HTMLDivElement>(null)
   const [cardsRevealed, setCardsRevealed] = useState(false)
   const [cardEntryDone, setCardEntryDone] = useState(false)
   const cardsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = cardsContainerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSectionRevealed(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const el = cardsRef.current
@@ -108,7 +126,7 @@ export default function Projects() {
         />
 
         {/* Animated Cards - scroll reveal */}
-        <div style={{ marginTop: '3rem' }}>
+        <div ref={cardsContainerRef} style={{ marginTop: '3rem' }}>
           {data.portfolio.map((project, i) => (
             <AnimatedCard
               key={project.id}
@@ -116,9 +134,12 @@ export default function Projects() {
               description={project.description}
               tags={project.tech}
               image={project.image}
+              imageHover={project.imageHover}
+              images={project.images}
               color={project.color}
               index={i}
               phoneCollage={project.id === 'project-1'}
+              revealed={sectionRevealed}
             />
           ))}
         </div>

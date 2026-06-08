@@ -1,5 +1,7 @@
 interface HeaderProps {
   activeSection: string
+  cursorEnabled: boolean
+  onToggleCursor: () => void
 }
 
 const links = [
@@ -11,7 +13,7 @@ const links = [
   { id: 'contact', label: 'Contact' },
 ]
 
-export default function Header({ activeSection }: HeaderProps) {
+export default function Header({ activeSection, cursorEnabled, onToggleCursor }: HeaderProps) {
   return (
     <nav
       style={{
@@ -27,16 +29,35 @@ export default function Header({ activeSection }: HeaderProps) {
         mixBlendMode: 'difference',
       }}
     >
-      <span
-        style={{
-          color: '#fff',
-          fontSize: '1.25rem',
-          fontWeight: 700,
-          letterSpacing: '0.05em',
-        }}
-      >
-        GF<span style={{ color: '#d2ff00' }}>.</span>
-      </span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <span
+          style={{
+            color: '#fff',
+            fontSize: '1.25rem',
+            fontWeight: 700,
+            letterSpacing: '0.05em',
+          }}
+        >
+          GF<span style={{ color: '#d2ff00' }}>.</span>
+        </span>
+        <button
+          onClick={onToggleCursor}
+          style={{
+            width: 18,
+            height: 18,
+            borderRadius: '50%',
+            border: `2px solid ${cursorEnabled ? '#d2ff00' : 'rgba(255,255,255,0.25)'}`,
+            background: cursorEnabled ? '#d2ff00' : 'transparent',
+            cursor: 'pointer',
+            padding: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'all 0.3s',
+          }}
+          aria-label="Toggle cursor trail"
+        />
+      </div>
       <div style={{ display: 'flex', gap: '2rem' }}>
         {links.map((link) => (
           <a

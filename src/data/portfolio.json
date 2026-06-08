@@ -20,6 +20,13 @@
       "tech": ["React", "XState", "TanStack Query", "GCP"],
       "image": "/images/web_admin_1.png",
       "imageHover": "/images/web_admin_4.png",
+      "images": [
+        "/images/web_admin_1.png",
+        "/images/web_admin_2.png",
+        "/images/web_admin_3.png",
+        "/images/web_admin_4.png",
+        "/images/web_admin_5.png"
+      ],
       "color": "#764ba2"
     },
     {
@@ -30,6 +37,13 @@
       "tech": ["React", "Firebase", "CSS"],
       "image": "/images/credoMutwa/screenshot_1.png",
       "imageHover": "/images/credoMutwa/screenshot_4.png",
+      "images": [
+        "/images/credoMutwa/screenshot_1.png",
+        "/images/credoMutwa/screenshot_2.png",
+        "/images/credoMutwa/screenshot_3.png",
+        "/images/credoMutwa/screenshot_4.png",
+        "/images/credoMutwa/screenshot_5.png"
+      ],
       "color": "#00b894"
     },
     {
@@ -40,6 +54,13 @@
       "tech": ["React", "Firebase", "Material UI"],
       "image": "/images/soweto_theatre/screenshot_2.png",
       "imageHover": "/images/soweto_theatre/screenshot_3.png",
+      "images": [
+        "/images/soweto_theatre/screenshot_1.png",
+        "/images/soweto_theatre/screenshot_2.png",
+        "/images/soweto_theatre/screenshot_3.png",
+        "/images/soweto_theatre/screenshot_4.png",
+        "/images/soweto_theatre/screenshot_5.png"
+      ],
       "color": "#e17055"
     },
     {
@@ -50,6 +71,12 @@
       "tech": ["React", "Firebase", "Stripe"],
       "image": "/images/aquestrian/screenshot_1.png",
       "imageHover": "/images/aquestrian/screenshot_3.png",
+      "images": [
+        "/images/aquestrian/screenshot_1.png",
+        "/images/aquestrian/screenshot_2.png",
+        "/images/aquestrian/screenshot_3.png",
+        "/images/aquestrian/screenshot_4.png"
+      ],
       "color": "#0984e3"
     }
   ],

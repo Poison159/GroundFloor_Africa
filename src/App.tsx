@@ -7,10 +7,12 @@ import Projects from './components/Projects'
 import Team from './components/Team'
 import Pricing from './components/Pricing'
 import Contact from './components/Contact'
+import CursorTrail from './components/CursorTrail'
 import { useActiveSection } from './hooks/useScrollReveal'
 
 export default function App() {
   const [loading, setLoading] = useState(true)
+  const [cursorEnabled, setCursorEnabled] = useState(false)
   const activeSection = useActiveSection()
 
   const handleLoaderComplete = useCallback(() => {
@@ -18,10 +20,11 @@ export default function App() {
   }, [])
 
   return (
-    <div style={{ background: '#0a0a0a', color: '#fff', fontFamily: 'system-ui, sans-serif' }}>
-      {loading && <Loader onComplete={handleLoaderComplete} />}
+      <div style={{ background: '#0a0a0a', color: '#fff', fontFamily: 'system-ui, sans-serif' }}>
+        {cursorEnabled && <CursorTrail />}
+        {loading && <Loader onComplete={handleLoaderComplete} />}
 
-      <Header activeSection={activeSection} />
+      <Header activeSection={activeSection} cursorEnabled={cursorEnabled} onToggleCursor={() => setCursorEnabled(c => !c)} />
 
       <main
         style={{
