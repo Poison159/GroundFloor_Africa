@@ -8,7 +8,7 @@
       "tech": ["React Native", "Expo", ".NET Core", "MongoDB"],
       "image": "/images/SpotVibe-Merketing/screenshot_1.png",
       "imageHover": "/images/SpotVibe-Merketing/screenshot_2.png",
-      "video": "https://storage.googleapis.com/envibe_staging/reels/spotvibe-demo.mov",
+      "video": "https://storage.googleapis.com/envibe/reels/spotvibe-demo.mov",
       "color": "#667eea",
       "appStore": "https://apps.apple.com/za/app/spotvibe/id6747991573",
       "playStore": "https://play.google.com/store/apps/details?id=com.groundfloor.envibe"
