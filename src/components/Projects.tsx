@@ -15,6 +15,8 @@ export default function Projects() {
   const [cardsRevealed, setCardsRevealed] = useState(false)
   const [cardEntryDone, setCardEntryDone] = useState(false)
   const cardsRef = useRef<HTMLDivElement>(null)
+  const [arrowPos, setArrowPos] = useState({ x: 0, y: 0 })
+  const smoothPathRef = useRef<SVGPathElement>(null)
 
   useEffect(() => {
     const el = cardsContainerRef.current
@@ -49,6 +51,107 @@ export default function Projects() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    const computeArrow = () => {
+      const section = document.getElementById('projects')
+      const container = section?.querySelector('[data-projects-container]') as HTMLElement | null
+      const startMarker = section?.querySelector('[data-projects-path-start]') as HTMLElement | null
+      const cards = section?.querySelectorAll<HTMLElement>('[data-card-image]')
+      if (!container || !startMarker || !cards || cards.length === 0) return
+
+      const containerRect = container.getBoundingClientRect()
+      const startRect = startMarker.getBoundingClientRect()
+
+      const startX = startRect.left - containerRect.left + startRect.width / 2
+      const startY = startRect.top - containerRect.top + startRect.height / 2
+
+      const points: { x: number; y: number }[] = [{ x: startX, y: startY }]
+
+      cards.forEach((card, i) => {
+        const rect = card.getBoundingClientRect()
+        const relX = rect.left - containerRect.left
+        const relY = rect.top - containerRect.top
+        const relRight = rect.right - containerRect.left
+        const relBottom = rect.bottom - containerRect.top
+        const relMidY = relY + (relBottom - relY) / 2
+
+        if (i % 2 === 0) {
+          points.push({ x: relRight + 20, y: relMidY - 16 })
+          points.push({ x: relRight + 20, y: relMidY + 16 })
+        } else {
+          points.push({ x: relX - 20, y: relMidY + 16 })
+          points.push({ x: relX - 20, y: relMidY - 16 })
+        }
+      })
+
+      let maxBottom = startRect.bottom
+      cards.forEach(card => {
+        const r = card.getBoundingClientRect()
+        maxBottom = Math.max(maxBottom, r.bottom)
+      })
+
+      const rawProgress = Math.max(0, Math.min(1,
+        (window.innerHeight - startRect.top) / (window.innerHeight + (maxBottom - startRect.top))
+      ))
+
+      // Build expanded waypoints with S-curve swings between each pair
+      const expanded: { x: number; y: number }[] = [points[0]]
+      for (let i = 0; i < points.length - 1; i++) {
+        const a = points[i]
+        const b = points[i + 1]
+        const dx = b.x - a.x
+        const dy = b.y - a.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        const nx = -dy / dist
+        const ny = dx / dist
+        const swing = Math.min(50, dist * 0.35)
+        const sign = i % 2 === 0 ? 1 : -1
+
+        expanded.push({
+          x: a.x + dx * 0.33 + nx * swing * sign,
+          y: a.y + dy * 0.33 + ny * swing * sign,
+        })
+        expanded.push({
+          x: a.x + dx * 0.67 - nx * swing * sign,
+          y: a.y + dy * 0.67 - ny * swing * sign,
+        })
+        expanded.push(b)
+      }
+
+      // Catmull-rom smooth cubic bezier through expanded points
+      const n = expanded.length
+      let d = `M ${expanded[0].x} ${expanded[0].y}`
+      for (let i = 0; i < n - 1; i++) {
+        const pPrev = expanded[Math.max(0, i - 1)]
+        const p1 = expanded[i]
+        const p2 = expanded[i + 1]
+        const pNext = expanded[Math.min(n - 1, i + 2)]
+        const cp1x = p1.x + (p2.x - pPrev.x) / 6
+        const cp1y = p1.y + (p2.y - pPrev.y) / 6
+        const cp2x = p2.x - (pNext.x - p1.x) / 6
+        const cp2y = p2.y - (pNext.y - p1.y) / 6
+        d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`
+      }
+
+      if (smoothPathRef.current) {
+        smoothPathRef.current.setAttribute('d', d)
+        const totalLen = smoothPathRef.current.getTotalLength()
+        if (totalLen > 0) {
+          const len = totalLen * rawProgress
+          const clamped = Math.max(0, Math.min(totalLen, len))
+          const pt = smoothPathRef.current.getPointAtLength(clamped)
+          const prevPt = smoothPathRef.current.getPointAtLength(Math.max(0, clamped - 3))
+          const angle = Math.atan2(pt.y - prevPt.y, pt.x - prevPt.x) * 180 / Math.PI + 90
+          setArrowPos({ x: pt.x, y: pt.y })
+        }
+      }
+    }
+
+    window.addEventListener('scroll', computeArrow, { passive: true })
+    computeArrow()
+    return () => window.removeEventListener('scroll', computeArrow)
+  }, [])
+
   const dismiss = useCallback(() => {
     if (dismissing) return
     setDismissing(true)
@@ -78,9 +181,11 @@ export default function Projects() {
       }}
     >
       <div
+        data-projects-container
         style={{
           maxWidth: 1200,
           margin: '0 auto',
+          position: 'relative',
           transition: 'all 0.8s cubic-bezier(0.65, 0, 0.35, 1)',
           transform: visible ? 'translateY(0)' : 'translateY(40px)',
           opacity: visible ? 1 : 0,
@@ -107,6 +212,19 @@ export default function Projects() {
           }}
           highlightIndex={1}
           highlightColor="#d2ff00"
+        />
+        <span
+          data-projects-path-start
+          style={{
+            position: 'absolute',
+            left: '1rem',
+            top: '5rem',
+            opacity: 0,
+            pointerEvents: 'none',
+            userSelect: 'none',
+            fontSize: 0,
+          }}
+          aria-hidden
         />
         <RedactedReveal
           lines={[
@@ -142,11 +260,38 @@ export default function Projects() {
               url={project.url}
               color={project.color}
               index={i}
+              cardIndex={i}
               phoneCollage={project.id === 'project-1'}
               revealed={sectionRevealed}
             />
           ))}
         </div>
+
+        {/* Scroll-driven arrow that hops through cards */}
+        <svg
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            zIndex: -1,
+            opacity: sectionRevealed ? 1 : 0,
+            transition: 'opacity 0.8s ease',
+          }}
+        >
+          <path ref={smoothPathRef} d="" fill="none" stroke="none" />
+          {arrowPos.y > 0 && (
+            <g
+              transform={`translate(${arrowPos.x},${arrowPos.y})`}
+              style={{ transition: 'transform 0.15s linear' }}
+            >
+              <circle cx="0" cy="0" r="10" fill="none" stroke="#d2ff00" strokeWidth="2" opacity="0.2" />
+              <circle cx="0" cy="0" r="6" fill="none" stroke="#d2ff00" strokeWidth="1.5" />
+              <circle cx="0" cy="0" r="2.5" fill="#d2ff00" />
+            </g>
+          )}
+        </svg>
 
         {/* Tinder-like Swipe Cards */}
         <div ref={cardsRef} style={{ marginTop: '6rem' }}>

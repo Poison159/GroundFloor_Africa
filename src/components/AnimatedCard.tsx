@@ -20,9 +20,10 @@ interface AnimatedCardProps {
   index: number
   phoneCollage?: boolean
   revealed: boolean
+  cardIndex?: number
 }
 
-export default function AnimatedCard({ title, description, tags, image, imageHover, images, video, appStore, playStore, url, color, index, phoneCollage, revealed }: AnimatedCardProps) {
+export default function AnimatedCard({ title, description, tags, image, imageHover, images, video, appStore, playStore, url, color, index, phoneCollage, revealed, cardIndex }: AnimatedCardProps) {
   const [active, setActive] = useState(false)
   const [hovered, setHovered] = useState(false)
 
@@ -184,6 +185,7 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
             </span>
           </div>
           <div
+            data-card-image={cardIndex}
             style={{
               aspectRatio: '4/3',
               width: '100%',
@@ -197,6 +199,7 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
         </div>
       ) : images ? (
         <div
+          data-card-image={cardIndex}
           style={{
             flex: 1.2,
             minWidth: 0,
@@ -240,6 +243,7 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
         </div>
       ) : (
         <div
+          data-card-image={cardIndex}
           style={{
             flex: 1.2,
             minWidth: 0,
