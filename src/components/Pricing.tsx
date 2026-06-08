@@ -107,7 +107,7 @@ export default function Pricing() {
       id="pricing"
       ref={ref}
       style={{
-        padding: '6rem 3rem',
+        padding: '6rem 3rem 1rem',
         background: '#050505',
       }}
     >
@@ -122,37 +122,96 @@ export default function Pricing() {
       >
         <div
           style={{
-            width: 40,
-            height: 3,
-            background: '#d2ff00',
-            borderRadius: 2,
-            marginBottom: '1rem',
-          }}
-        />
-        <h2
-          style={{
-            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-            fontWeight: 700,
-            color: '#fff',
-            margin: 0,
-            lineHeight: 1.1,
+            display: 'flex',
+            gap: '3rem',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          Affordable{' '}
-          <span style={{ color: '#d2ff00' }}>Pricing</span>
-        </h2>
-        <p
-          style={{
-            color: 'rgba(255,255,255,0.4)',
-            fontSize: '1rem',
-            marginTop: '0.75rem',
-            maxWidth: 600,
-            lineHeight: 1.6,
-          }}
-        >
-          Expertly built by senior developers — at a fraction of the cost. We leverage AI to deliver fast,
-          but every solution is handcrafted, reviewed, and production-ready.
-        </p>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div
+              style={{
+                width: 40,
+                height: 3,
+                background: '#d2ff00',
+                borderRadius: 2,
+                marginBottom: '1rem',
+              }}
+            />
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                fontWeight: 700,
+                color: '#fff',
+                margin: 0,
+                lineHeight: 1.1,
+              }}
+            >
+              Affordable{' '}
+              <span style={{ color: '#d2ff00' }}>Pricing</span>
+            </h2>
+            <p
+              style={{
+                color: 'rgba(255,255,255,0.4)',
+                fontSize: '1rem',
+                marginTop: '0.75rem',
+                maxWidth: 600,
+                lineHeight: 1.6,
+              }}
+            >
+              Expertly built by senior developers — at a fraction of the cost. We leverage AI to deliver fast,
+              but every solution is handcrafted, reviewed, and production-ready.
+            </p>
+          </div>
+
+          <div
+            style={{
+              flexShrink: 0,
+              maxWidth: '30%',
+              minWidth: 200,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              transform: visible ? 'translateX(0)' : 'translateX(60px)',
+              opacity: visible ? 1 : 0,
+              transition: 'all 1.2s cubic-bezier(0.65, 0, 0.35, 1)',
+              pointerEvents: 'none',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'Caveat', cursive",
+                fontSize: 'clamp(1.2rem, 2.5vw, 2.2rem)',
+                color: '#d2ff00',
+                marginBottom: '0.75rem',
+                textShadow: '0 0 40px rgba(210,255,0,0.15)',
+                whiteSpace: 'nowrap',
+                userSelect: 'none',
+              }}
+            >
+              Shut up and take my money
+            </span>
+            <div style={{ position: 'relative', width: '100%', borderRadius: 12, overflow: 'hidden' }}>
+              <img
+                src="/images/Shut%20Up%20and%20Take%20My%20Money%20Meme.png"
+                alt="Shut up and take my money meme"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top right, #050505 0%, #050505 8%, transparent 55%)',
+                  pointerEvents: 'none',
+                }}
+              />
+            </div>
+          </div>
+        </div>
 
         <div
           style={{
