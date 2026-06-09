@@ -17,7 +17,19 @@ interface PhoneCollageProps {
   video?: string
 }
 
+function useIsMobile() {
+  const [mobile, setMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+  return mobile
+}
+
 export default function PhoneCollage({ video }: PhoneCollageProps) {
+  const isMobile = useIsMobile()
   const [hoveredDisplayIdx, setHoveredDisplayIdx] = useState<number | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -55,8 +67,8 @@ export default function PhoneCollage({ video }: PhoneCollageProps) {
         let z = 5 - di
 
         if (isHov) {
-          pushY = -28
-          s = 1.12
+          pushY = isMobile ? -40 : -28
+          s = isMobile ? 3 : 1.12
           z = 10
         } else if (dist === 1) {
           pushX = isLeft ? -35 : 35
@@ -76,14 +88,14 @@ export default function PhoneCollage({ video }: PhoneCollageProps) {
               position: 'absolute',
               left: `calc(50% + ${baseOffsets[di]}%)`,
               top: '50%',
-              width: '42%',
+              width: isMobile && isHov ? '42%' : '42%',
               aspectRatio: '9 / 19.5',
-              borderRadius: 12,
+              borderRadius: isMobile && isHov ? 24 : 12,
               overflow: 'hidden',
               cursor: 'pointer',
               transform: `translate(-50%, -50%) rotate(${baseRotations[di]}deg) translateX(${pushX}px) translateY(${pushY}px) scale(${s})`,
               zIndex: z,
-              transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease',
+              transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease, border-radius 0.5s ease',
               boxShadow: isHov
                 ? '0 24px 80px rgba(0,0,0,0.6)'
                 : '0 4px 20px rgba(0,0,0,0.35)',
