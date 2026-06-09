@@ -1,7 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import RedactedReveal from './RedactedReveal'
 import PhoneCollage from './PhoneCollage'
 import ImageCycler from './ImageCycler'
+import { FaReact } from 'react-icons/fa'
+import { SiExpo, SiDotnet, SiMongodb, SiXstate, SiReactquery, SiGooglecloud, SiFirebase, SiCss, SiMui, SiStripe } from 'react-icons/si'
+
+const techIconMap: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
+  'React': FaReact,
+  'React Native': FaReact,
+  'Expo': SiExpo,
+  '.NET Core': SiDotnet,
+  'MongoDB': SiMongodb,
+  'XState': SiXstate,
+  'TanStack Query': SiReactquery,
+  'GCP': SiGooglecloud,
+  'Firebase': SiFirebase,
+  'CSS': SiCss,
+  'Material UI': SiMui,
+  'Stripe': SiStripe,
+}
 
 const ease = '0.6s cubic-bezier(0.65, 0, 0.35, 1)'
 
@@ -19,24 +36,35 @@ interface AnimatedCardProps {
   color: string
   index: number
   phoneCollage?: boolean
-  revealed: boolean
   cardIndex?: number
 }
 
-export default function AnimatedCard({ title, description, tags, image, imageHover, images, video, appStore, playStore, url, color, index, phoneCollage, revealed, cardIndex }: AnimatedCardProps) {
+export default function AnimatedCard({ title, description, tags, image, imageHover, images, video, appStore, playStore, url, color, index, phoneCollage, cardIndex }: AnimatedCardProps) {
   const [active, setActive] = useState(false)
   const [hovered, setHovered] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!revealed) return
-    const timer = setTimeout(() => setActive(true), index * 2000)
-    return () => clearTimeout(timer)
-  }, [revealed, index])
+    const el = cardRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setActive(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.2 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <>
       <style>{`@keyframes zoomBurst { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }`}</style>
       <div
+      ref={cardRef}
       style={{
         display: 'flex',
         flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
@@ -89,22 +117,52 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
           }}
         />
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.25rem' }}>
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              style={{
-                padding: '0.35rem 0.85rem',
-                background: 'rgba(255,255,255,0.06)',
-                borderRadius: 100,
-                color: 'rgba(255,255,255,0.6)',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                letterSpacing: '0.02em',
-              }}
-            >
-              {tag}
-            </span>
-          ))}
+          {tags.map((tag, i) => {
+            const IconComp = techIconMap[tag]
+            return (
+              <span
+                key={tag}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  padding: '0.2rem 0.85rem 0.2rem 0.35rem',
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(210,255,0,0.25)',
+                  borderRadius: 100,
+                  color: 'rgba(255,255,255,0.6)',
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.02em',
+                  opacity: active ? 1 : 0,
+                  transform: active ? 'translateX(0)' : 'translateX(-24px)',
+                  transition: `all 0.5s cubic-bezier(0.65, 0, 0.35, 1) ${i * 0.3}s`,
+                }}
+              >
+                <span
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    background: 'rgba(210,255,0,0.12)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  {IconComp ? (
+                    <IconComp size={11} color="rgba(210,255,0,0.7)" />
+                  ) : (
+                    <span style={{ fontSize: '0.45rem', color: 'rgba(210,255,0,0.5)', fontWeight: 700 }}>
+                      {tag.charAt(0)}
+                    </span>
+                  )}
+                </span>
+                {tag}
+              </span>
+            )
+          })}
         </div>
         {appStore && playStore && (
           <div

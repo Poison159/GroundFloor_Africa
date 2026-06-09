@@ -262,7 +262,6 @@ export default function Projects() {
               index={i}
               cardIndex={i}
               phoneCollage={project.id === 'project-1'}
-              revealed={sectionRevealed}
             />
           ))}
         </div>
