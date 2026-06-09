@@ -8,19 +8,7 @@ interface ImageCyclerProps {
   duration?: number
 }
 
-function useIsMobile() {
-  const [mobile, setMobile] = useState(false)
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= 768)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
-  }, [])
-  return mobile
-}
-
 export default function ImageCycler({ images, alt, duration = 2000 }: ImageCyclerProps) {
-  const isMobile = useIsMobile()
   const [hovering, setHovering] = useState(false)
   const [base, setBase] = useState(images[0])
   const [baseOpacity, setBaseOpacity] = useState(1)
@@ -70,9 +58,6 @@ export default function ImageCycler({ images, alt, duration = 2000 }: ImageCycle
     }
   }, [hovering, base, duration, images])
 
-  const zoom = hovering && isMobile ? 3 : 1
-  const baseZoomOut = isMobile ? (hovering ? 2.8 : 1) : 0.95
-
   return (
     <div
       style={{
@@ -87,6 +72,7 @@ export default function ImageCycler({ images, alt, duration = 2000 }: ImageCycle
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
+      {/* Base image — fades out + scales down when entering takes over */}
       <img
         src={base}
         alt={alt}
@@ -98,10 +84,11 @@ export default function ImageCycler({ images, alt, duration = 2000 }: ImageCycle
           objectFit: 'cover',
           display: 'block',
           opacity: baseOpacity,
-          transform: baseOpacity === 0 ? `scale(${baseZoomOut})` : `scale(${zoom})`,
+          transform: baseOpacity === 0 ? 'scale(0.95)' : 'scale(1)',
           transition: noTransition ? 'none' : `opacity ${ease}, transform ${ease}`,
         }}
       />
+      {/* Entering image — fades in + scales up */}
       {enterSrc && (
         <img
           src={enterSrc}
@@ -114,7 +101,7 @@ export default function ImageCycler({ images, alt, duration = 2000 }: ImageCycle
             objectFit: 'cover',
             display: 'block',
             opacity: enterOpacity,
-            transform: enterOpacity === 1 ? `scale(${zoom})` : `scale(${isMobile ? 2.8 : 1.1})`,
+            transform: enterOpacity === 1 ? 'scale(1)' : 'scale(1.1)',
             transition: `opacity ${ease}, transform ${ease}`,
           }}
         />

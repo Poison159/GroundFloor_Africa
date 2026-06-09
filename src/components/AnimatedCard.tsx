@@ -39,19 +39,7 @@ interface AnimatedCardProps {
   cardIndex?: number
 }
 
-function useIsMobile() {
-  const [mobile, setMobile] = useState(false)
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= 768)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
-  }, [])
-  return mobile
-}
-
 export default function AnimatedCard({ title, description, tags, image, imageHover, images, video, appStore, playStore, url, color, index, phoneCollage, cardIndex }: AnimatedCardProps) {
-  const isMobile = useIsMobile()
   const [active, setActive] = useState(false)
   const [hovered, setHovered] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -339,7 +327,7 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
                   objectFit: 'cover',
                   display: 'block',
                   opacity: hovered ? 0 : 1,
-                  transform: hovered ? (isMobile ? 'scale(2.8)' : 'scale(0.95)') : 'scale(1)',
+                  transform: hovered ? 'scale(0.95)' : 'scale(1)',
                   transition: `opacity ${ease}, transform ${ease}`,
                 }}
               />
@@ -354,7 +342,7 @@ export default function AnimatedCard({ title, description, tags, image, imageHov
                   objectFit: 'cover',
                   display: 'block',
                   opacity: hovered ? 1 : 0,
-                  transform: hovered ? (isMobile ? 'scale(3)' : 'scale(1)') : (isMobile ? 'scale(1)' : 'scale(1.1)'),
+                  transform: hovered ? 'scale(1)' : 'scale(1.1)',
                   transition: `opacity ${ease}, transform ${ease}`,
                 }}
               />
