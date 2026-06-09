@@ -90,12 +90,12 @@ export default function PhoneCollage({ video }: PhoneCollageProps) {
               top: '50%',
               width: isMobile && isHov ? '42%' : '42%',
               aspectRatio: '9 / 19.5',
-              borderRadius: isMobile && isHov ? 24 : 12,
+              borderRadius: 12,
               overflow: 'hidden',
               cursor: 'pointer',
               transform: `translate(-50%, -50%) rotate(${baseRotations[di]}deg) translateX(${pushX}px) translateY(${pushY}px) scale(${s})`,
               zIndex: z,
-              transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease, border-radius 0.5s ease',
+              transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease',
               boxShadow: isHov
                 ? '0 24px 80px rgba(0,0,0,0.6)'
                 : '0 4px 20px rgba(0,0,0,0.35)',
