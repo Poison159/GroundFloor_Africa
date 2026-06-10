@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 
 const images = [
   '/images/phone_images/1.png',
@@ -31,16 +31,21 @@ function useIsMobile() {
 export default function PhoneCollage({ video }: PhoneCollageProps) {
   const isMobile = useIsMobile()
   const [hoveredDisplayIdx, setHoveredDisplayIdx] = useState<number | null>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
+
+  const videos = useMemo(() => {
+    if (!video) return undefined
+    return Array.from({ length: 5 }, (_, i) =>
+      video.replace(/demo_\d+/, `demo_${i + 1}`)
+    )
+  }, [video])
 
   useEffect(() => {
-    const el = videoRef.current
-    if (!el) return
-    if (hoveredDisplayIdx === 0) {
-      el.play().catch(() => {})
-    } else {
-      el.pause()
-      el.currentTime = 0
+    videoRefs.current.forEach((el) => {
+      if (el) { el.pause(); el.currentTime = 0 }
+    })
+    if (hoveredDisplayIdx !== null && videoRefs.current[hoveredDisplayIdx]) {
+      videoRefs.current[hoveredDisplayIdx]!.play().catch(() => {})
     }
   }, [hoveredDisplayIdx])
 
@@ -101,10 +106,10 @@ export default function PhoneCollage({ video }: PhoneCollageProps) {
                 : '0 4px 20px rgba(0,0,0,0.35)',
             }}
           >
-            {video && di === 0 ? (
+            {videos && videos[di] ? (
               <video
-                ref={videoRef}
-                src={video}
+                ref={el => { videoRefs.current[di] = el }}
+                src={videos[di]}
                 muted
                 playsInline
                 loop
