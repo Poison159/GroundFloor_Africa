@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import Header from './components/Header'
 import Loader from './components/Loader'
 import Hero from './components/Hero'
@@ -8,12 +8,36 @@ import Team from './components/Team'
 import Pricing from './components/Pricing'
 import Contact from './components/Contact'
 import CursorTrail from './components/CursorTrail'
+import Cube3D from './components/Cube3D'
 import { useActiveSection } from './hooks/useScrollReveal'
 
 export default function App() {
   const [loading, setLoading] = useState(true)
   const [cursorEnabled, setCursorEnabled] = useState(false)
+  const [cubeProgress, setCubeProgress] = useState(0)
   const activeSection = useActiveSection()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const hero = document.getElementById('hero')
+      const work = document.getElementById('work')
+      if (!hero || !work) return
+
+      const heroTop = hero.offsetTop
+      const workTop = work.offsetTop
+      const scrollY = window.scrollY
+      const windowHeight = window.innerHeight
+
+      const start = heroTop
+      const end = workTop - windowHeight * 0.3
+      const raw = (scrollY - start) / (end - start)
+      setCubeProgress(Math.max(0, Math.min(1.3, raw)))
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const handleLoaderComplete = useCallback(() => {
     setLoading(false)
@@ -24,6 +48,7 @@ export default function App() {
         {cursorEnabled && <CursorTrail />}
         {loading && <Loader onComplete={handleLoaderComplete} />}
 
+      <Cube3D progress={cubeProgress} />
       <Header activeSection={activeSection} cursorEnabled={cursorEnabled} onToggleCursor={() => setCursorEnabled(c => !c)} />
 
       <main

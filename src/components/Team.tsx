@@ -88,16 +88,17 @@ function TeamCard({ member, index }: { member: typeof data.team[0]; index: numbe
       </div>
 
       <div
-        style={{
-          flex: 1,
-          minWidth: 0,
-          aspectRatio: '1/1',
-          borderRadius: 24,
-          overflow: 'hidden',
-          position: 'relative',
-          background: '#111',
-          maxWidth: 300,
-        }}
+          style={{
+            flex: 1,
+            minWidth: 0,
+            aspectRatio: '1/1',
+            borderRadius: 24,
+            overflow: 'hidden',
+            position: 'relative',
+            background: '#111',
+            maxWidth: 300,
+            border: '2px solid #d2ff00',
+          }}
       >
         <img
           src={member.image}

@@ -14,7 +14,7 @@ export default function Contact() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '4rem 2rem',
+        padding: '1rem 2rem 4rem',
         position: 'relative',
         background: '#050505',
         transition: 'background 0.8s',
@@ -25,7 +25,7 @@ export default function Contact() {
           maxWidth: 600,
           textAlign: 'center',
           transition: 'all 0.8s cubic-bezier(0.65, 0, 0.35, 1)',
-          transform: visible ? 'translateY(0)' : 'translateY(40px)',
+          transform: visible ? 'translateY(-110px)' : 'translateY(40px)',
           opacity: visible ? 1 : 0,
         }}
       >
